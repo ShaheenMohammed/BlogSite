@@ -13,8 +13,6 @@ const postSchema = {
     content: String
 }
 
-
-
 const Post = mongoose.model("Post", postSchema);
 
 
@@ -31,12 +29,12 @@ app.use(express.static("public"));
 
 app.get("/", (req, res) => {
 
-    Post.find({},(err,items)=>{
+    Post.find({}, (err, items) => {
         if (err) {
             console.log(err);
-            
+
         } else {
-            res.render("home",{newPost:items});   
+            res.render("home", { newPost: items });
         }
     });
 
@@ -45,20 +43,20 @@ app.get("/", (req, res) => {
 app.get("/posts/:postid", (req, res) => {
     let params = _.capitalize(req.params.postid);
 
-    Post.findOne({title:params},(err,item)=>{
+    Post.findOne({ title: params }, (err, item) => {
 
         if (err) {
             console.log(err);
-            
+
         } else {
-                    res.render("post",{postTitle:item.title,postDescription:item.content});
+            res.render("post", { postTitle: item.title, postDescription: item.content });
 
         }
-});            
+    });
 });
 
 app.get("/contact", (req, res) => {
-res.render("contact");
+    res.render("contact");
 });
 
 app.get("/about", (req, res) => {
@@ -75,13 +73,13 @@ app.post("/compose", (req, res) => {
         title: _.capitalize(req.body.title),
         content: req.body.post
     };
-    Post.insertMany(compose,(err)=>{
+    Post.insertMany(compose, (err) => {
         if (err) {
             console.log(err);
-            
+
         } else {
             console.log("success");
-            
+
         }
     });
     res.redirect("/");
@@ -89,9 +87,9 @@ app.post("/compose", (req, res) => {
 
 let port = process.env.PORT;
 if (port == null || port == "") {
-  port = 3000;
+    port = 3000;
 }
 
-app.listen(port, function() {
-  console.log("Server started");
+app.listen(port, function () {
+    console.log("Server started");
 });
